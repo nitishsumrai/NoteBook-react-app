@@ -12,21 +12,24 @@ class App extends Component {
     }
   }
   componentDidMount = () => {
-    let noteMap = localStorage.getItem('note');
-    if (!noteMap) {
-      localStorage.setItem('note', '{}');
-      noteMap = localStorage.getItem('note');
-    }
-    noteMap = JSON.parse(noteMap);
+    let noteMap = this.getJSONObjectOfNote();
     var result = Object.keys(noteMap).map((key) => { return { title: key, desc: noteMap[key] } });
     this.setState({
       noteList: result,
       // isEditing: null
     })
   }
-  handleAddingNote = (data) => {
+  getJSONObjectOfNote = () => {
     let noteMap = localStorage.getItem('note');
+    if (!noteMap) {
+      localStorage.setItem('note', '{}');
+      noteMap = localStorage.getItem('note');
+    }
     noteMap = JSON.parse(noteMap);
+    return noteMap;
+  }
+  handleAddingNote = (data) => {
+    let noteMap = this.getJSONObjectOfNote()
     if (noteMap[data.title]) {
       return false;
     } else {
@@ -41,15 +44,8 @@ class App extends Component {
     }
   }
   handleDeleteNode = (index) => {
-    let noteMap = localStorage.getItem('note');
-    noteMap = JSON.parse(noteMap);
-
     const { noteList } = this.state;
-
-    delete noteMap[noteList[index].title]
-    localStorage.setItem('note', JSON.stringify(noteMap));
-
-
+    this.deleteNoteFromLocalStorage(noteList[index].title)
     noteList.splice(index, 1);
     this.setState({
       noteList: noteList
@@ -59,17 +55,26 @@ class App extends Component {
     const { noteList } = this.state;
     // remove that note and pass it to NoteForm as Prop
     const noteToUpdate = noteList.splice(index, 1)[0];
-    let noteMap = localStorage.getItem('note');
-    noteMap = JSON.parse(noteMap);
-    delete noteMap[noteList[index].title]
-    localStorage.setItem('note', JSON.stringify(noteMap));
+    this.deleteNoteFromLocalStorage(noteToUpdate.title)
     this.setState({
       noteList: noteList,
       isEditing: noteToUpdate
     })
   }
+  // delete Note of passed title
+  deleteNoteFromLocalStorage = (title) => {
+    let noteMap = this.getJSONObjectOfNote();
+    delete noteMap[title];
+    localStorage.setItem('note', JSON.stringify(noteMap));
+  }
   handleSearchNote = (value) => {
     console.log(value)
+    let noteMap = this.getJSONObjectOfNote();
+    let result = Object.keys(noteMap).map((key) => { return { title: key, desc: noteMap[key] } });
+    result = result.filter((note) => { return note.title.includes(value) })
+    this.setState({
+      noteList: result
+    })
   }
   render() {
     const { noteList, isEditing } = this.state;
