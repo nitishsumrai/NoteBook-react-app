@@ -1,6 +1,6 @@
 {
   "files": {
-    "main.css": "/NoteBook-react-app/static/css/main.43e8516b.chunk.css",
+    "main.css": "/NoteBook-react-app/static/css/main.cbe7d610.chunk.css",
     "main.js": "/NoteBook-react-app/static/js/main.b3ac4452.chunk.js",
     "main.js.map": "/NoteBook-react-app/static/js/main.b3ac4452.chunk.js.map",
     "runtime-main.js": "/NoteBook-react-app/static/js/runtime-main.2b7a22e7.js",
@@ -8,13 +8,13 @@
     "static/js/2.93a0e57f.chunk.js": "/NoteBook-react-app/static/js/2.93a0e57f.chunk.js",
     "static/js/2.93a0e57f.chunk.js.map": "/NoteBook-react-app/static/js/2.93a0e57f.chunk.js.map",
     "index.html": "/NoteBook-react-app/index.html",
-    "static/css/main.43e8516b.chunk.css.map": "/NoteBook-react-app/static/css/main.43e8516b.chunk.css.map",
+    "static/css/main.cbe7d610.chunk.css.map": "/NoteBook-react-app/static/css/main.cbe7d610.chunk.css.map",
     "static/js/2.93a0e57f.chunk.js.LICENSE.txt": "/NoteBook-react-app/static/js/2.93a0e57f.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
     "static/js/runtime-main.2b7a22e7.js",
     "static/js/2.93a0e57f.chunk.js",
-    "static/css/main.43e8516b.chunk.css",
+    "static/css/main.cbe7d610.chunk.css",
     "static/js/main.b3ac4452.chunk.js"
   ]
 }
