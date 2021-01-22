@@ -11,31 +11,45 @@ class App extends Component {
       isEditing: null
     }
   }
-
-  handleAddingNote = (data) => {
-    const { noteList } = this.state;
-
-    var found = false;
-    // search if Note title is already present or not
-    for (var i = 0; i < noteList.length; i++) {
-      if (noteList[i].title == data.title) {
-        found = true;
-        break;
-      }
+  componentDidMount = () => {
+    let noteMap = localStorage.getItem('note');
+    if (!noteMap) {
+      localStorage.setItem('note', '{}');
+      noteMap = localStorage.getItem('note');
     }
-    // note already exists
-    if (found) {
-      return false;
-    }
-    // add new note
+    noteMap = JSON.parse(noteMap);
+    var result = Object.keys(noteMap).map((key) => { return { title: key, desc: noteMap[key] } });
     this.setState({
-      noteList: [...noteList, data]
-      , isEditing: null
+      noteList: result,
+      // isEditing: null
     })
-    return true;
+  }
+  handleAddingNote = (data) => {
+    let noteMap = localStorage.getItem('note');
+    noteMap = JSON.parse(noteMap);
+    if (noteMap[data.title]) {
+      return false;
+    } else {
+      noteMap[data.title] = data.desc;
+      var result = Object.keys(noteMap).map((key) => { return { title: key, desc: noteMap[key] } });
+      this.setState({
+        noteList: result,
+        isEditing: null
+      })
+      localStorage.setItem('note', JSON.stringify(noteMap));
+      return true;
+    }
   }
   handleDeleteNode = (index) => {
+    let noteMap = localStorage.getItem('note');
+    noteMap = JSON.parse(noteMap);
+
     const { noteList } = this.state;
+
+    delete noteMap[noteList[index].title]
+    localStorage.setItem('note', JSON.stringify(noteMap));
+
+
     noteList.splice(index, 1);
     this.setState({
       noteList: noteList
@@ -45,10 +59,17 @@ class App extends Component {
     const { noteList } = this.state;
     // remove that note and pass it to NoteForm as Prop
     const noteToUpdate = noteList.splice(index, 1)[0];
+    let noteMap = localStorage.getItem('note');
+    noteMap = JSON.parse(noteMap);
+    delete noteMap[noteList[index].title]
+    localStorage.setItem('note', JSON.stringify(noteMap));
     this.setState({
       noteList: noteList,
       isEditing: noteToUpdate
     })
+  }
+  handleSearchNote = (value) => {
+    console.log(value)
   }
   render() {
     const { noteList, isEditing } = this.state;
@@ -56,7 +77,7 @@ class App extends Component {
     return (
       <div className='App'>
         <NoteForm handleAddingNote={this.handleAddingNote} isEditing={isEditing} />
-        <SearchBar />
+        <SearchBar handleSearchNote={this.handleSearchNote} />
         <NoteList noteList={noteList} handleDeleteNode={this.handleDeleteNode} handleEditNote={this.handleEditNote} />
       </div>
     );
