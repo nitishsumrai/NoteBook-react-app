@@ -20,6 +20,9 @@ class Note extends Component {
         // console.log(this.props.dataKey);
         this.props.handleDeleteNode(this.props.dataKey);
     }
+    handleEditNote = () => {
+        this.props.handleEditNote(this.props.dataKey);
+    }
     render() {
         const { expand } = this.state;
         const { note } = this.props;
@@ -39,7 +42,7 @@ class Note extends Component {
 
                 </span>
                 <span>
-                    <FontAwesomeIcon icon={faEdit} />
+                    <FontAwesomeIcon icon={faEdit} onClick={this.handleEditNote} />
                     <br></br>
                     <FontAwesomeIcon icon={faTrashAlt} onClick={this.handleDeleteNode} />
                 </span>

@@ -8,7 +8,6 @@ class NoteForm extends Component {
     }
     handleFormSubmit = (e) => {
         e.preventDefault();
-        // console.log(this.titleInputRef.current.value, this.descInputRef.current.value)
         var isNodeAdded = this.props.handleAddingNote({ title: this.titleInputRef.current.value, desc: this.descInputRef.current.value })
         if (isNodeAdded) {
             this.titleInputRef.current.value = '';
@@ -19,11 +18,19 @@ class NoteForm extends Component {
 
     }
     render() {
+        const { isEditing } = this.props;
+        console.log((isEditing ? isEditing.title : ''))
         return (
             <div>
+
                 <form className="form" onSubmit={this.handleFormSubmit}>
-                    <input type='text' placeholder='Title' ref={this.titleInputRef} required></input>
-                    <input type='textarea' className="desc" placeholder='Description' ref={this.descInputRef}></input>
+                    <input type='text' placeholder='Title' ref={this.titleInputRef} defaultValue='asd' required></input>
+                    {isEditing ?
+                        <input type='textarea' className="desc" placeholder='Description' ref={this.descInputRef} value={isEditing.desc}></input>
+                        :
+                        <input type='textarea' className="desc" placeholder='Description' ref={this.descInputRef}></input>
+
+                    }
                     <button type='submit' >Submit</button>
                 </form>
             </div>

@@ -6,7 +6,7 @@ class NoteList extends Component {
         let NoteList = [];
         noteList.forEach((e, i) => {
             console.log(e);
-            NoteList.push(<Note note={e} key={i} handleDeleteNode={handleDeleteNode} dataKey={i} />)
+            NoteList.push(<Note note={e} key={i} handleDeleteNode={handleDeleteNode} dataKey={i} handleEditNote={this.props.handleEditNote} />)
         })
         return (
             <div>
