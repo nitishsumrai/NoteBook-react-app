@@ -30,6 +30,7 @@ class App extends Component {
     // add new note
     this.setState({
       noteList: [...noteList, data]
+      , isEditing: null
     })
     return true;
   }
@@ -42,9 +43,11 @@ class App extends Component {
   }
   handleEditNote = (index) => {
     const { noteList } = this.state;
+    // remove that note and pass it to NoteForm as Prop
+    const noteToUpdate = noteList.splice(index, 1)[0];
     this.setState({
       noteList: noteList,
-      isEditing: noteList.splice(index, 1)[0]
+      isEditing: noteToUpdate
     })
   }
   render() {

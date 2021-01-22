@@ -3,39 +3,62 @@ import './NoteForm.css'
 class NoteForm extends Component {
     constructor(props) {
         super(props);
-        this.titleInputRef = React.createRef();
-        this.descInputRef = React.createRef();
+        this.state = {
+            title: '',
+            desc: ''
+        }
     }
     handleFormSubmit = (e) => {
         e.preventDefault();
-        var isNodeAdded = this.props.handleAddingNote({ title: this.titleInputRef.current.value, desc: this.descInputRef.current.value })
+        var isNodeAdded = this.props.handleAddingNote({ title: this.state.title, desc: this.state.desc })
         if (isNodeAdded) {
-            this.titleInputRef.current.value = '';
-            this.descInputRef.current.value = '';
+            this.setState({
+                title: '',
+                desc: ''
+            });
         } else {
             alert('Entered Title already Exits');
         }
-
+    }
+    handleTitleChange = (e) => {
+        this.setState({
+            title: e.target.value
+        })
+    }
+    handleDescriptionChange = (e) => {
+        this.setState({
+            desc: e.target.value
+        })
+    }
+    componentDidUpdate(prevProps) {
+        if (prevProps.isEditing == null && this.props.isEditing != null) {
+            this.updateAndNotify();
+        }
+    }
+    updateAndNotify = () => {
+        console.log('prop.changes', this.state)
+        this.setState({
+            title: this.props.isEditing.title,
+            desc: this.props.isEditing.desc
+        }, () => {
+            console.log(this.state)
+        })
     }
     render() {
         const { isEditing } = this.props;
-        console.log((isEditing ? isEditing.title : ''))
+        // console.log((isEditing ? isEditing.title : ''))
         return (
             <div>
-
                 <form className="form" onSubmit={this.handleFormSubmit}>
-                    <input type='text' placeholder='Title' ref={this.titleInputRef} defaultValue='asd' required></input>
-                    {isEditing ?
-                        <input type='textarea' className="desc" placeholder='Description' ref={this.descInputRef} value={isEditing.desc}></input>
-                        :
-                        <input type='textarea' className="desc" placeholder='Description' ref={this.descInputRef}></input>
-
-                    }
+                    <input type='text' placeholder='Title' onChange={this.handleTitleChange} value={this.state.title} required></input>
+                    <input type='textarea' className="desc" placeholder='Description' onChange={this.handleDescriptionChange} value={this.state.desc}></input>
                     <button type='submit' >Submit</button>
                 </form>
             </div>
         );
+
     }
 }
+
 
 export default NoteForm;
